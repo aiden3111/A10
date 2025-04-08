@@ -1,1 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>A10 Cookie Demo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      footer{
+        margin-top: 40px;
+        font-size: 0.9em;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to the cookie demo page</h1>
+    <p id="cookieMessage"></p>
+    <script>
+      // function to set a cookie with a given name, value, and expiration (optional)
+      function setCookie(cookieName, cookieValue, exDays){
+        const d = new Date();
+        d.setTime(d.getTime() + (exDays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+      }
+      // function to get cookie value by name
+      function getCookie(cookieName){
+        let name = cookieName + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i < ca.length; i++){
+          let c = ca[i].trim();
+          if (c.indexOf(name) == 0){
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
 
+    // on page load, check if cookie exists
+      window.onload = function(){
+        let user = getCookie("username");
+        if (user != ""){
+          // if the cookie is found, display greeting
+          document.getElementByID("cookieMessage").innerText = "Welcome back, " + user + "!";
+        } else {
+          // if cookie not found, prompt user and set cookie
+          user = prompt("Please enter your name:");
+          if (user != "" && user != null){
+            setCookie("username", user, 7); //cookie expires in 7 days
+            // reload page to show the message
+            window.location.reload();
+          }
+        }
+      };
+    </script>
+    <footer>
+      &copy; 2025 - Aiden Miller - A10 Assignment 04/08/2025
+    </footer>
+  </body>
+</html>
